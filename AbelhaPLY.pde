@@ -37,6 +37,15 @@ class AbelhaPLY{
 
   ArrayList<PVector> antena2Pontos = new ArrayList();
   ArrayList<ArrayList<Integer>> antena2Faces = new ArrayList();
+
+  ArrayList<PVector> perna1Pontos = new ArrayList();
+  ArrayList<ArrayList<Integer>> perna1Faces = new ArrayList();
+  ArrayList<PVector> perna2Pontos = new ArrayList();
+  ArrayList<ArrayList<Integer>> perna2Faces = new ArrayList();
+  ArrayList<PVector> perna3Pontos = new ArrayList();
+  ArrayList<ArrayList<Integer>> perna3Faces = new ArrayList();
+  ArrayList<PVector> perna4Pontos = new ArrayList();
+  ArrayList<ArrayList<Integer>> perna4Faces = new ArrayList();
   
   private Utilitarios u = new Utilitarios();
   
@@ -87,5 +96,41 @@ class AbelhaPLY{
       ferraoPontos = (ArrayList<PVector>)r[0];
       ferraoFaces = (ArrayList<ArrayList<Integer>>)r[1];
   }
- 
+  
+  void gerarPernas(){
+  // gera a forma base uma vez
+  ArrayList r[] = u.gerarPerna(15, 50, 3);
+
+  // perna 1: frente-esquerda
+  perna1Pontos = clonarPontos((ArrayList<PVector>)r[0]);
+  perna1Faces = (ArrayList<ArrayList<Integer>>)r[1];
+  u.rotacao(perna1Pontos, 'y', radians(90), new PVector(0,0,0));
+  u.translacao(perna1Pontos, -80, 40, -50);
+
+  // perna 2: frente-direita
+  perna2Pontos = clonarPontos((ArrayList<PVector>)r[0]);
+  perna2Faces = (ArrayList<ArrayList<Integer>>)r[1];
+  u.rotacao(perna2Pontos, 'y', radians(90), new PVector(0,0,0));
+  u.translacao(perna2Pontos, -80, -40, -50);
+
+  // perna 3: trás-esquerda
+  perna3Pontos = clonarPontos((ArrayList<PVector>)r[0]);
+  perna3Faces = (ArrayList<ArrayList<Integer>>)r[1];
+  u.rotacao(perna3Pontos, 'y', radians(90), new PVector(0,0,0));
+  u.translacao(perna3Pontos, 60, 40, -50);
+
+  // perna 4: trás-direita
+  perna4Pontos = clonarPontos((ArrayList<PVector>)r[0]);
+  perna4Faces = (ArrayList<ArrayList<Integer>>)r[1];
+  u.rotacao(perna4Pontos, 'y', radians(90), new PVector(0,0,0));
+  u.translacao(perna4Pontos, 60, -40, -50);
+}
+
+ArrayList<PVector> clonarPontos(ArrayList<PVector> original){
+  ArrayList<PVector> copia = new ArrayList();
+  for (PVector p : original) {
+    copia.add(p.copy());
+  }
+  return copia;
+}
 }

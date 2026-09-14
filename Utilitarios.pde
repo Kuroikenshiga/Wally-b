@@ -305,4 +305,76 @@ ArrayList[] gerarCone(float raio,float z){
   
 }
 
+ArrayList<Integer> criarFace(int a, int b, int c) {
+  ArrayList<Integer> f = new ArrayList();
+  f.add(a); f.add(b); f.add(c);
+  return f;
+}
+
+ArrayList<ArrayList<Integer>> subdividirPerna(ArrayList<PVector> vert, ArrayList<ArrayList<Integer>> faces, float raio) {
+  ArrayList<ArrayList<Integer>> novas = new ArrayList();
+  for (ArrayList<Integer> face : faces) {
+    PVector u1 = vert.get(face.get(0));
+    PVector u2 = vert.get(face.get(1));
+    PVector u3 = vert.get(face.get(2));
+
+    PVector v4 = PVector.add(u1, u2).div(2).normalize().mult(raio);
+    PVector v5 = PVector.add(u2, u3).div(2).normalize().mult(raio);
+    PVector v6 = PVector.add(u3, u1).div(2).normalize().mult(raio);
+
+    int u4 = vert.size(); vert.add(v4);
+    int u5 = vert.size(); vert.add(v5);
+    int u6 = vert.size(); vert.add(v6);
+
+    novas.add(criarFace(face.get(0), u4, u6));
+    novas.add(criarFace(u4, face.get(1), u5));
+    novas.add(criarFace(face.get(2), u6, u5));
+    novas.add(criarFace(u4, u5, u6));
+  }
+  return novas;
+}
+
+ArrayList[] gerarPerna(float raio, float alturaCone, int iteracoes) {
+  ArrayList<PVector> vert = new ArrayList();
+  ArrayList<ArrayList<Integer>> faces = new ArrayList();
+
+  vert.add(new PVector(raio, 0, 0));
+  vert.add(new PVector(0, raio, 0));
+  vert.add(new PVector(0, 0, raio));
+  vert.add(new PVector(-raio, 0, 0));
+  vert.add(new PVector(0, -raio, 0));
+
+  faces.add(criarFace(0, 1, 2));
+  faces.add(criarFace(1, 3, 2));
+  faces.add(criarFace(3, 4, 2));
+  faces.add(criarFace(4, 0, 2));
+
+  for (int i = 0; i < iteracoes; i++) {
+    faces = subdividirPerna(vert, faces, raio);
+  }
+
+  int apice = vert.size();
+  vert.add(new PVector(0, 0, -alturaCone));
+
+  ArrayList<Integer> anel = new ArrayList();
+  for (int i = 0; i < vert.size(); i++) {
+    if (abs(vert.get(i).z) < 0.0001) anel.add(i);
+  }
+
+  anel.sort((a, b) -> {
+    float angA = atan2(vert.get(a).y, vert.get(a).x);
+    float angB = atan2(vert.get(b).y, vert.get(b).x);
+    return Float.compare(angA, angB);
+  });
+
+  int n = anel.size();
+  for (int i = 0; i < n; i++) {
+    int atual = anel.get(i);
+    int prox = anel.get((i + 1) % n);
+    faces.add(criarFace(atual, apice, prox));
+  }
+
+  return new ArrayList[]{vert, faces};
+}
+
 }
