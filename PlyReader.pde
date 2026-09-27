@@ -112,7 +112,7 @@ void rotZ(int graus){
     }
 }
 void exportArq(String name,boolean originalScale){
-    new Thread(()->{
+   
     
     //String exportArq[] = new String[linhas.length];
      PrintWriter saida = createWriter("/exports/"+name);
@@ -135,6 +135,6 @@ void exportArq(String name,boolean originalScale){
     
     saida.close();
     
-    }).start();
+
   }
 }

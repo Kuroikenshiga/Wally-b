@@ -2,11 +2,10 @@ void setup(){
 
   AbelhaPLY ab = new AbelhaPLY();
   
-  ab.gerarAsas();
-  ab.gerarCorpo();
-  ab.gerarFerrao();
-  PlyReader ply = new PlyReader(ab.ferraoPontos,ab.ferraoFaces);
+  //ab.gerarCabeca();
+  ab.gerarOlhos();
+  PlyReader ply = new PlyReader(ab.olho1Pontos,ab.olho1Faces);
   //print(ab.corpoFaces);
-  ply.exportArq("ferrao.ply",true);
-
+  ply.exportArq("cabeca.ply",true);
+  exit();
 }
