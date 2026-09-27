@@ -154,11 +154,11 @@ class AbelhaPLY {
       }
     }
     u.scale(perna1Pontos, new PVector(0.5, -0.5, 0.5));
-    u.rotacao(perna1Pontos,'z',radians(45),new PVector());
-    u.translacao(perna1Pontos,60,-130,-35);
+    u.rotacao(perna1Pontos, 'z', radians(45), new PVector());
+    u.translacao(perna1Pontos, 60, -130, -35);
     corpoPontos.addAll(perna1Pontos);
     corpoFaces.addAll(perna1Faces);
-    
+
     //perna 2
     offset = corpoPontos.size();
     for (int i = 0; i < this.perna2Faces.size(); i++) {
@@ -167,11 +167,11 @@ class AbelhaPLY {
       }
     }
     u.scale(perna2Pontos, new PVector(0.5, -0.5, 0.5));
-    u.rotacao(perna2Pontos,'z',radians(45),new PVector());
-    u.translacao(perna2Pontos,60,-130,35);
+    u.rotacao(perna2Pontos, 'z', radians(45), new PVector());
+    u.translacao(perna2Pontos, 60, -130, 35);
     corpoPontos.addAll(perna2Pontos);
     corpoFaces.addAll(perna2Faces);
-    
+
     //perna 3
     offset = corpoPontos.size();
     for (int i = 0; i < this.perna3Faces.size(); i++) {
@@ -180,12 +180,12 @@ class AbelhaPLY {
       }
     }
     u.scale(perna3Pontos, new PVector(0.5, -0.5, 0.5));
-    u.rotacao(perna3Pontos,'z',radians(-30),new PVector());
-    u.translacao(perna3Pontos,-10,-130,35);
+    u.rotacao(perna3Pontos, 'z', radians(-30), new PVector());
+    u.translacao(perna3Pontos, -10, -130, 35);
     corpoPontos.addAll(perna3Pontos);
     corpoFaces.addAll(perna3Faces);
-    
-     //perna 4
+
+    //perna 4
     offset = corpoPontos.size();
     for (int i = 0; i < this.perna4Faces.size(); i++) {
       for (int j = 0; j < this.perna4Faces.get(i).size(); j++) {
@@ -193,8 +193,8 @@ class AbelhaPLY {
       }
     }
     u.scale(perna4Pontos, new PVector(0.5, -0.5, 0.5));
-    u.rotacao(perna4Pontos,'z',radians(-30),new PVector());
-    u.translacao(perna4Pontos,-10,-130,-35);
+    u.rotacao(perna4Pontos, 'z', radians(-30), new PVector());
+    u.translacao(perna4Pontos, -10, -130, -35);
     corpoPontos.addAll(perna4Pontos);
     corpoFaces.addAll(perna4Faces);
   }
@@ -486,35 +486,35 @@ class AbelhaPLY {
 
   void gerarPernas() {
     PVector[] pts = new PVector[]{
-       new PVector(-15, 30),
-  new PVector(0,   0),    // topo (ponta)
-  new PVector(22,  30),
-  new PVector(42,  65),
-  new PVector(52,  100),  // bojo máximo
-  new PVector(50,  130),  // era (46,135) → mantém raio mais alto, mais perto do bojo
-  new PVector(35,  158),  // era (25,165) → mais largo e mais perto da base
-  new PVector(0,   180),  // base (arredondada)
-  new PVector(-35, 158),
-     
+      new PVector(-15, 30),
+      new PVector(0, 0), // topo (ponta)
+      new PVector(22, 30),
+      new PVector(42, 65),
+      new PVector(52, 100), // bojo máximo
+      new PVector(50, 130), // era (46,135) → mantém raio mais alto, mais perto do bojo
+      new PVector(35, 158), // era (25,165) → mais largo e mais perto da base
+      new PVector(0, 180), // base (arredondada)
+      new PVector(-35, 158),
+
     };
     ArrayList<PVector> pontos = u.CatmullRomSpline(pts);
-    perna1Pontos = u.gerarSolido(pontos,30);
-    u.scale(perna1Pontos,new PVector(1,1.2,1));
-    perna1Faces = u.gerarFacesF(12,606);
-    
+    perna1Pontos = u.gerarSolido(pontos, 30);
+    u.scale(perna1Pontos, new PVector(1, 1.2, 1));
+    perna1Faces = u.gerarFacesF(12, 606);
+
     pontos = u.CatmullRomSpline(pts);
-    perna2Pontos = u.gerarSolido(pontos,30);
-    u.scale(perna2Pontos,new PVector(1,1.2,1));
-    perna2Faces = u.gerarFacesF(12,606);
-    
+    perna2Pontos = u.gerarSolido(pontos, 30);
+    u.scale(perna2Pontos, new PVector(1, 1.2, 1));
+    perna2Faces = u.gerarFacesF(12, 606);
+
     pontos = u.CatmullRomSpline(pts);
-    perna3Pontos = u.gerarSolido(pontos,30);
-    u.scale(perna3Pontos,new PVector(1,1.2,1));
-    perna3Faces = u.gerarFacesF(12,606);
-    
+    perna3Pontos = u.gerarSolido(pontos, 30);
+    u.scale(perna3Pontos, new PVector(1, 1.2, 1));
+    perna3Faces = u.gerarFacesF(12, 606);
+
     pontos = u.CatmullRomSpline(pts);
-    perna4Pontos = u.gerarSolido(pontos,30);
-    u.scale(perna4Pontos,new PVector(1,1.2,1));
-    perna4Faces = u.gerarFacesF(12,606);
+    perna4Pontos = u.gerarSolido(pontos, 30);
+    u.scale(perna4Pontos, new PVector(1, 1.2, 1));
+    perna4Faces = u.gerarFacesF(12, 606);
   }
 }
