@@ -115,7 +115,7 @@ void exportArq(String name,boolean originalScale){
    
     
     //String exportArq[] = new String[linhas.length];
-     PrintWriter saida = createWriter("/exports/"+name);
+     PrintWriter saida = createWriter("exports/"+name);
 
     saida.println("ply\nformat ascii 1.0\nelement vertex "+pontos.size()+"\nproperty float x\nproperty float y\nproperty float z\nelement face "+faces.size()+"\nproperty list uchar int vertex_index\nend_header");
     

@@ -363,6 +363,37 @@ void projecaoRadial2(ArrayList<PVector>pontos, float R) {
     p.mult(R);
   }
 }
+
+ ArrayList[] gerarCilindro(float raio, float z) {
+    ArrayList<PVector> pontos = gerarElipse(30, raio, raio, 0);
+    
+    ArrayList<ArrayList<Integer>> faces = new ArrayList();
+    ArrayList<PVector> aux = new ArrayList();
+    for (PVector p : pontos) {
+      aux.add(new PVector(p.x,p.y,z));
+    }
+    pontos.addAll(aux);
+    faces.add(new ArrayList());
+    for (int i = 0; i < pontos.size()/2; i++) {
+      faces.get(faces.size()-1).add(i);
+    }
+  
+    faces.add(new ArrayList());
+    for (int i = pontos.size()/2; i < pontos.size(); i++) {
+      faces.get(faces.size()-1).add(i);
+    }
+  
+    for (int i = 0; i < pontos.size()/2; i++) {
+      int indice = i == pontos.size()/2-1?0:i+1;
+      faces.add(new ArrayList());
+      faces.get(faces.size()-1).add(i);
+      faces.get(faces.size()-1).add(indice);
+      faces.get(faces.size()-1).add(pontos.size()/2 + indice);
+      faces.get(faces.size()-1).add(pontos.size()/2 + i);
+    }
+    return new ArrayList[]{pontos, faces};
+  }
+  
 void projecaoRadial2Palbebra(ArrayList<PVector>pontos, float R,float factorAbertura) {
 
   for (PVector p : pontos) {
@@ -372,5 +403,135 @@ void projecaoRadial2Palbebra(ArrayList<PVector>pontos, float R,float factorAbert
     p.mult(R);
   }
 }
+ ArrayList<Integer> criarFace(int a, int b, int c) {
+  ArrayList<Integer> f = new ArrayList();
+  f.add(a); f.add(b); f.add(c);
+  return f;
+}
 
+ArrayList<ArrayList<Integer>> subdividirPerna(ArrayList<PVector> vert, ArrayList<ArrayList<Integer>> faces, float raio) {
+  ArrayList<ArrayList<Integer>> novas = new ArrayList();
+  for (ArrayList<Integer> face : faces) {
+    PVector u1 = vert.get(face.get(0));
+    PVector u2 = vert.get(face.get(1));
+    PVector u3 = vert.get(face.get(2));
+
+    PVector v4 = PVector.add(u1, u2).div(2).normalize().mult(raio);
+    PVector v5 = PVector.add(u2, u3).div(2).normalize().mult(raio);
+    PVector v6 = PVector.add(u3, u1).div(2).normalize().mult(raio);
+
+    int u4 = vert.size(); vert.add(v4);
+    int u5 = vert.size(); vert.add(v5);
+    int u6 = vert.size(); vert.add(v6);
+
+    novas.add(criarFace(face.get(0), u4, u6));
+    novas.add(criarFace(u4, face.get(1), u5));
+    novas.add(criarFace(face.get(2), u6, u5));
+    novas.add(criarFace(u4, u5, u6));
+  }
+  return novas;
+}
+ArrayList[] gerarPerna(float raio, float alturaCone, int iteracoes) {
+  ArrayList<PVector> vert = new ArrayList();
+  ArrayList<ArrayList<Integer>> faces = new ArrayList();
+
+  vert.add(new PVector(raio, 0, 0));
+  vert.add(new PVector(0, raio, 0));
+  vert.add(new PVector(0, 0, raio));
+  vert.add(new PVector(-raio, 0, 0));
+  vert.add(new PVector(0, -raio, 0));
+
+  faces.add(criarFace(0, 1, 2));
+  faces.add(criarFace(1, 3, 2));
+  faces.add(criarFace(3, 4, 2));
+  faces.add(criarFace(4, 0, 2));
+
+  for (int i = 0; i < iteracoes; i++) {
+    faces = subdividirPerna(vert, faces, raio);
+  }
+
+  int apice = vert.size();
+  vert.add(new PVector(0, 0, -alturaCone));
+
+  ArrayList<Integer> anel = new ArrayList();
+  for (int i = 0; i < vert.size(); i++) {
+    if (abs(vert.get(i).z) < 0.0001) anel.add(i);
+  }
+
+  anel.sort((a, b) -> {
+    float angA = atan2(vert.get(a).y, vert.get(a).x);
+    float angB = atan2(vert.get(b).y, vert.get(b).x);
+    return Float.compare(angA, angB);
+  });
+
+  int n = anel.size();
+  for (int i = 0; i < n; i++) {
+    int atual = anel.get(i);
+    int prox = anel.get((i + 1) % n);
+    faces.add(criarFace(atual, apice, prox));
+  }
+
+  return new ArrayList[]{vert, faces};
+}
+
+ArrayList<PVector> CatmullRomSpline(PVector[] ptsC){
+  ArrayList<PVector> pontos = new ArrayList();
+  int inic = 0, fim = 3;
+  for(;fim < ptsC.length;fim++){
+    println("inic = "+inic+" fim = "+ fim);
+    pontos.addAll(CatmullRomSplineSEG(ptsC,100,inic));
+    inic++;
+  }
+  
+  return pontos;
+}
+ArrayList<PVector> CatmullRomSplineSEG(PVector[] ptsC,int qntPontos,int inic ){
+  ArrayList<PVector> pontos = new ArrayList(); 
+  for(float i = 0;i <= qntPontos;i++){
+    float t = i/qntPontos;
+    PVector p = new PVector();
+    p.x = 0.5*(2*ptsC[inic+1].x + (-ptsC[inic].x + ptsC[inic+2].x)*t + (2*ptsC[inic].x - 5*ptsC[inic+1].x + 4 * ptsC[inic+2].x - ptsC[inic+3].x)*(t*t) + (-ptsC[inic].x + 3*ptsC[inic+1].x - 3*ptsC[inic+2].x + ptsC[inic+3].x)*(t*t*t));
+    p.y = 0.5*(2*ptsC[inic+1].y + (-ptsC[inic].y + ptsC[inic+2].y)*t + (2*ptsC[inic].y - 5*ptsC[inic+1].y + 4 * ptsC[inic+2].y - ptsC[inic+3].y)*(t*t) + (-ptsC[inic].y + 3*ptsC[inic+1].y - 3*ptsC[inic+2].y + ptsC[inic+3].y)*(t*t*t));
+    p.z = 0.5*(2*ptsC[inic+1].z + (-ptsC[inic].z + ptsC[inic+2].z)*t + (2*ptsC[inic].z - 5*ptsC[inic+1].z + 4 * ptsC[inic+2].z - ptsC[inic+3].z)*(t*t) + (-ptsC[inic].z + 3*ptsC[inic+1].z - 3*ptsC[inic+2].z + ptsC[inic+3].z)*(t*t*t));
+    pontos.add(p);
+  }
+  
+  return pontos;
+  
+}
+ArrayList<PVector> gerarSolido(ArrayList<PVector> pts,float anguloInc){
+  ArrayList<PVector> pontos = new ArrayList();
+  pontos.addAll(pts);
+  for(float i = anguloInc;i < 360;i += anguloInc){
+    ArrayList<PVector> pn = new ArrayList();
+    for(PVector p:pts){
+      pn.add(new PVector(p.x,p.y,p.z));
+    }
+    rotacao(pn,'y',radians(i),new PVector(0,0,0));
+    pontos.addAll(pn);
+  }
+  return pontos;
+}
+ArrayList<ArrayList<Integer>> gerarFacesF(int Qgrupos,int tamanhoGrupo){
+  ArrayList<ArrayList<Integer>> faces = new ArrayList();
+  //int limit = 360 /30;
+  for(int grps = 0;grps < Qgrupos;grps++){
+    int g = grps == Qgrupos-1?0:grps+1;
+    for(int i = 0;i < tamanhoGrupo-1;i++){
+      faces.add(new ArrayList());
+      faces.get(faces.size()-1).add((grps*tamanhoGrupo) + i);
+      faces.get(faces.size()-1).add((grps*tamanhoGrupo) + i+1);
+      
+      faces.get(faces.size()-1).add(((g)*tamanhoGrupo) + i+1);
+      
+      faces.get(faces.size()-1).add(((g)*tamanhoGrupo) + i);
+      
+      
+      
+      
+      
+    }
+  }
+  return faces;
+}
 }
