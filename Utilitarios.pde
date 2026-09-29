@@ -393,10 +393,10 @@ class Utilitarios { //<>//
     return new ArrayList[]{pontos, faces};
   }
 
-  void projecaoRadial2Palbebra(ArrayList<PVector>pontos, float R, float factorAbertura) {
+  void projecaoRadial2Palbebra(ArrayList<PVector>pontos, float R, float factorAbertura,PVector deslocamento) {
 
     for (PVector p : pontos) {
-
+      p.add(deslocamento);
       p.z = R*factorAbertura;
       p.normalize();
       p.mult(R);
@@ -533,4 +533,33 @@ class Utilitarios { //<>//
     }
     return faces;
   }
+ ArrayList<ArrayList<Integer>> gerarFacesSorriso(ArrayList<PVector> pontos) {
+  ArrayList<ArrayList<Integer>> faces = new ArrayList<ArrayList<Integer>>();
+  int totalPontos = pontos.size();
+
+  // Para N pontos na curva, criamos (N - 1) segmentos de fita.
+  // Cada segmento gera 2 triângulos (faces).
+  for (int i = 0; i < totalPontos - 1; i++) {
+    int iTopo = i;
+    int iBase = i + totalPontos;
+    int proxTopo = i + 1;
+    int proxBase = i + 1 + totalPontos;
+
+    // --- Face 1: Triângulo Esquerdo/Superior ---
+    ArrayList<Integer> face1 = new ArrayList<Integer>();
+    face1.add(iTopo);
+    face1.add(iBase);
+    face1.add(proxTopo);
+    faces.add(face1);
+
+    // --- Face 2: Triângulo Direito/Inferior ---
+    ArrayList<Integer> face2 = new ArrayList<Integer>();
+    face2.add(proxTopo);
+    face2.add(iBase);
+    face2.add(proxBase);
+    faces.add(face2);
+  }
+
+  return faces;
+}
 }

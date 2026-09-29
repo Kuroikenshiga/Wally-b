@@ -116,11 +116,39 @@ class PlyReader {
     //String exportArq[] = new String[linhas.length];
     PrintWriter saida = createWriter("exports/"+name);
 
-    saida.println("ply\nformat ascii 1.0\nelement vertex "+pontos.size()+"\nproperty float x\nproperty float y\nproperty float z\nelement face "+faces.size()+"\nproperty list uchar int vertex_index\nend_header");
+    saida.println("ply\nformat ascii 1.0\nelement vertex "+pontos.size()
+    +"\nproperty float x\nproperty float y\nproperty float z\nelement face "+faces.size()
+    +"\nproperty list uchar int vertex_index\nend_header");
 
     for (PVector p : this.pontos) {
       saida.println(String.format("%f %f %f", p.x/(originalScale?this.scale:1), p.y/(originalScale?this.scale:1), p.z/(originalScale?this.scale:1)).replace(",", "."));
       saida.flush();
+    }
+    for (ArrayList<Integer> f : this.faces) {
+      String s = ""+f.size()+" ";
+      for (int j : f) {
+        s += ""+j+" ";
+      }
+      saida.println(s);
+      saida.flush();
+    }
+
+    saida.close();
+  }
+  void exportArq(String name, boolean originalScale,ArrayList<String>RGBcolors) {
+
+
+    //String exportArq[] = new String[linhas.length];
+    PrintWriter saida = createWriter("exports/"+name);
+
+    saida.println("ply\nformat ascii 1.0\nelement vertex "+pontos.size()
+    +"\nproperty float x\nproperty float y\nproperty float z\nproperty uchar red\nproperty uchar green\nproperty uchar blue\nelement face "+faces.size()
+    +"\nproperty list uchar int vertex_index\nend_header");
+    int i = 0;
+    for (PVector p : this.pontos) {
+      saida.println(String.format("%f %f %f %s", p.x/(originalScale?this.scale:1), p.y/(originalScale?this.scale:1), p.z/(originalScale?this.scale:1),RGBcolors.get(i)).replace(",", "."));
+      saida.flush();
+      i++;
     }
     for (ArrayList<Integer> f : this.faces) {
       String s = ""+f.size()+" ";
