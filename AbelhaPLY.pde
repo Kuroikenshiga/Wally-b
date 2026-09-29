@@ -397,7 +397,7 @@ class AbelhaPLY {
   void gerarNariz() {
     ArrayList r[] = u.gerarEsfera(4);
     narizPontos = (ArrayList<PVector>)r[0];
-    for (int i =0; i < narizPontos.size(); i++)corNariz.add("101 67 33");
+    for (int i =0; i < narizPontos.size(); i++)corNariz.add("92 64 51");
     narizFaces = (ArrayList<ArrayList<Integer>>)r[1];
     u.scale(this.narizPontos, new PVector(0.4f, 0.4f, 0.4f));
   }
@@ -459,25 +459,25 @@ class AbelhaPLY {
     ArrayList[]r = u.gerarElipsoide(1f, 1f, 40, true);
 
     this.palpebra1Pontos = (ArrayList<PVector>)r[0];
-    this.setCores(this.palpebra1Pontos.size(), corPalpebra1, "255 255 0");
+    this.setCores(this.palpebra1Pontos.size(), corPalpebra1, "255 255 255");
     this.palpebra1Faces = (ArrayList<ArrayList<Integer>>)r[1];
 
     r = u.gerarElipsoide(1f, 1f, 40, true);
 
     this.palpebra2Pontos = (ArrayList<PVector>)r[0];
-    this.setCores(this.palpebra2Pontos.size(), corPalpebra2, "255 255 0");
+    this.setCores(this.palpebra2Pontos.size(), corPalpebra2, "255 255 255");
     this.palpebra2Faces = (ArrayList<ArrayList<Integer>>)r[1];
   }
 
   void gerarAntenas(float raio, float z) {
     ArrayList[]r = u.gerarCilindro(raio*0.6, z*1.2);
     this.antena1Pontos = (ArrayList<PVector>)r[0];
-    for (int i =0; i < antena1Pontos.size(); i++)corAntena1.add("255 255 0");
+    for (int i =0; i < antena1Pontos.size(); i++)corAntena1.add("255 255 255");
     this.antena1Faces = (ArrayList<ArrayList<Integer>>)r[1];
 
     r = u.gerarEsfera(4);
     ArrayList<PVector> eP = (ArrayList<PVector>)r[0];
-    for (int i =0; i < eP.size(); i++)corAntena1.add("255 255 0");
+    for (int i =0; i < eP.size(); i++)corAntena1.add("255 255 255");
     ArrayList<ArrayList<Integer>> eF = (ArrayList<ArrayList<Integer>>)r[1];
     u.scale(eP, new PVector(raio, raio, raio));
     int offset = this.antena1Pontos.size();
@@ -493,7 +493,7 @@ class AbelhaPLY {
 
     r = u.gerarCilindro(raio*0.6, z+z*1.6f);
     ArrayList<PVector>antena1PontosB = (ArrayList<PVector>)r[0];
-    for (int i =0; i < antena1PontosB.size(); i++)corAntena1.add("255 255 0");
+    for (int i =0; i < antena1PontosB.size(); i++)corAntena1.add("255 255 255");
     ArrayList<ArrayList<Integer>>antena1FacesB = (ArrayList<ArrayList<Integer>>)r[1];
     u.rotacao(antena1Pontos, 'y', radians(20), new PVector());
     u.translacao(antena1Pontos, -0.005, 0, 0.03);
@@ -512,12 +512,12 @@ class AbelhaPLY {
 
     r = u.gerarCilindro(raio*0.6, z*1.2);
     this.antena2Pontos = (ArrayList<PVector>)r[0];
-    for (int i =0; i < antena2Pontos.size(); i++)corAntena2.add("255 255 0");
+    for (int i =0; i < antena2Pontos.size(); i++)corAntena2.add("255 255 255");
     this.antena2Faces = (ArrayList<ArrayList<Integer>>)r[1];
 
     r = u.gerarEsfera(4);
     eP = (ArrayList<PVector>)r[0];
-    for (int i =0; i < eP.size(); i++)corAntena2.add("255 255 0");
+    for (int i =0; i < eP.size(); i++)corAntena2.add("255 255 255");
     eF = (ArrayList<ArrayList<Integer>>)r[1];
     u.scale(eP, new PVector(raio, raio, raio));
     offset = this.antena2Pontos.size();
@@ -533,7 +533,7 @@ class AbelhaPLY {
 
     r = u.gerarCilindro(raio*0.6, z+z*1.6f);
     antena1PontosB = (ArrayList<PVector>)r[0];
-    for (int i =0; i < antena1PontosB.size(); i++)corAntena2.add("255 255 0");
+    for (int i =0; i < antena1PontosB.size(); i++)corAntena2.add("255 255 255");
     antena1FacesB = (ArrayList<ArrayList<Integer>>)r[1];
     u.rotacao(antena2Pontos, 'y', radians(20), new PVector());
     u.translacao(antena1Pontos, -0.005, 0, 0.03);
