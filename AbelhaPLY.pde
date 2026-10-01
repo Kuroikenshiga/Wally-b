@@ -68,6 +68,8 @@ class AbelhaPLY {
   ArrayList<ArrayList<Integer>> perna4Faces = new ArrayList();
   ArrayList<String> corPerna4 = new ArrayList();
 
+  ArrayList<ArrayList<PVector>>conjuntoDeComponentesPontos = new ArrayList();
+  ArrayList<ArrayList<ArrayList<Integer>>>conjuntoDeComponentesFaces = new ArrayList();
   private Utilitarios u = new Utilitarios();
 
   void gerarAsas() {
@@ -78,13 +80,36 @@ class AbelhaPLY {
     asa1Faces.add(new ArrayList());
     asa1Faces.get(asa1Faces.size()-1).add(0);
 
+    conjuntoDeComponentesPontos.add(new ArrayList(this.asa1Pontos));
+
     asa2Faces.add(new ArrayList());
-    asa2Faces.get(asa2Faces.size()-1).add(0);
+    asa2Faces.get(asa2Faces.size()-1).add(asa2Pontos.size()-1);
+
+
+
+    conjuntoDeComponentesPontos.add(new ArrayList(this.asa2Pontos));
 
     for (int i = 1; i < asa1Pontos.size(); i++) {
       asa1Faces.get(asa1Faces.size()-1).add(i);
       asa2Faces.get(asa2Faces.size()-1).add(asa1Pontos.size()-1 - i);
     }
+    ArrayList<ArrayList<Integer>>novo = new ArrayList();
+    for (ArrayList<Integer>arr : this.asa1Faces) {
+      novo.add(new ArrayList());
+      for (Integer i : arr) {
+        novo.get(novo.size()-1).add(i);
+      }
+    }
+    conjuntoDeComponentesFaces.add(novo);
+
+    novo = new ArrayList();
+    for (ArrayList<Integer>arr : this.asa2Faces) {
+      novo.add(new ArrayList());
+      for (Integer i : arr) {
+        novo.get(novo.size()-1).add(i);
+      }
+    }
+    conjuntoDeComponentesFaces.add(novo);
   }
 
   void gerarCorpo() {
@@ -93,7 +118,16 @@ class AbelhaPLY {
     for (int i =0; i < corpoPontos.size(); i++)corCorpo.add("255 255 0");
     u.scale(corpoPontos, new PVector(150, 120, 120));
     corpoFaces = (ArrayList<ArrayList<Integer>>)r[1];
-
+    conjuntoDeComponentesPontos.add(new ArrayList(this.corpoPontos));
+    //conjuntoDeComponentesFaces.add(new ArrayList(this.corpoFaces));
+    ArrayList<ArrayList<Integer>>novo = new ArrayList();
+    for (ArrayList<Integer>arr : this.corpoFaces) {
+      novo.add(new ArrayList());
+      for (Integer i : arr) {
+        novo.get(novo.size()-1).add(i);
+      }
+    }
+    conjuntoDeComponentesFaces.add(novo);
     gerarAsas();
 
     int offset = corpoPontos.size();
@@ -123,7 +157,10 @@ class AbelhaPLY {
     }
 
     for (int i = 0; i< this.asa1Pontos.size(); i++) {
-      this.asa2Pontos.set(i, PVector.mult(this.asa1Pontos.get(i), -1));
+      PVector p = PVector.mult(this.asa1Pontos.get(i), -1);
+      this.asa2Pontos.get(i).x = p.x;
+      this.asa2Pontos.get(i).y = p.y;
+      this.asa2Pontos.get(i).z = p.z;
       this.asa2Pontos.get(i).y *= -1;
       this.asa2Pontos.get(i).x *= -1;
     }
@@ -221,15 +258,35 @@ class AbelhaPLY {
   void gerarOlhos() {
     ArrayList r[] = u.gerarEsfera(4);
     this.olho1Pontos = (ArrayList<PVector>)r[0];
+
     this.setCores(this.olho1Pontos.size(), corOlho1, "255 255 255");
     this.olho1Faces = (ArrayList<ArrayList<Integer>>)r[1];
-
+    conjuntoDeComponentesPontos.add(new ArrayList(this.olho1Pontos));
+    //conjuntoDeComponentesFaces.add(new ArrayList(this.olho1Faces));
+    ArrayList<ArrayList<Integer>>novo = new ArrayList();
+    for (ArrayList<Integer>arr : this.olho1Faces) {
+      novo.add(new ArrayList());
+      for (Integer i : arr) {
+        novo.get(novo.size()-1).add(i);
+      }
+    }
+    conjuntoDeComponentesFaces.add(novo);
     u.scale(this.olho1Pontos, new PVector(0.4f, 0.4f, 0.4f));
 
     r = u.gerarEsfera(4);
     olho2Pontos = (ArrayList<PVector>)r[0];
     this.setCores(this.olho2Pontos.size(), corOlho2, "255 255 255");
     olho2Faces = (ArrayList<ArrayList<Integer>>)r[1];
+    conjuntoDeComponentesPontos.add(new ArrayList(this.olho2Pontos));
+    //conjuntoDeComponentesFaces.add(new ArrayList(this.olho2Faces));
+    novo = new ArrayList();
+    for (ArrayList<Integer>arr : this.olho2Faces) {
+      novo.add(new ArrayList());
+      for (Integer i : arr) {
+        novo.get(novo.size()-1).add(i);
+      }
+    }
+    conjuntoDeComponentesFaces.add(novo);
     u.scale(this.olho2Pontos, new PVector(0.4f, 0.4f, 0.4f));
 
     gerarPalpebra();
@@ -257,6 +314,16 @@ class AbelhaPLY {
     this.olho1Pontos.addAll(iris1P);
     u.translacao(iris1P, 0, 0, 0.25);
     ArrayList<ArrayList<Integer>> iris1F = (ArrayList<ArrayList<Integer>>)r[1];
+    conjuntoDeComponentesPontos.add(new ArrayList(iris1P));
+    //conjuntoDeComponentesFaces.add(new ArrayList(iris1F));
+    novo = new ArrayList();
+    for (ArrayList<Integer>arr : iris1F) {
+      novo.add(new ArrayList());
+      for (Integer i : arr) {
+        novo.get(novo.size()-1).add(i);
+      }
+    }
+    conjuntoDeComponentesFaces.add(novo);
     for (int i = 0; i < iris1F.size(); i++) {
       for (int j = 0; j < iris1F.get(i).size(); j++) {
         iris1F.get(i).set(j, iris1F.get(i).get(j)+offset);
@@ -281,11 +348,21 @@ class AbelhaPLY {
 
     iris1P = (ArrayList<PVector>)r[0];
     u.scale(iris1P, new PVector(0.2f, 0.2f, 0.2f));
+    conjuntoDeComponentesPontos.add(new ArrayList(iris1P));
+
+    conjuntoDeComponentesFaces.add(novo);
     offset = olho2Pontos.size();
     for (int i =0; i < iris1P.size(); i++)corOlho2.add("0 0 0");
     this.olho2Pontos.addAll(iris1P);
     u.translacao(iris1P, 0, 0, 0.25);
     iris1F = (ArrayList<ArrayList<Integer>>)r[1];
+    novo = new ArrayList();
+    for (ArrayList<Integer>arr : iris1F) {
+      novo.add(new ArrayList());
+      for (Integer i : arr) {
+        novo.get(novo.size()-1).add(i);
+      }
+    }
     for (int i = 0; i < iris1F.size(); i++) {
       for (int j = 0; j < iris1F.get(i).size(); j++) {
         iris1F.get(i).set(j, iris1F.get(i).get(j)+offset);
@@ -297,6 +374,16 @@ class AbelhaPLY {
     ArrayList r[] = u.gerarEsfera(6);
     this.cabecaPontos = (ArrayList<PVector>)r[0];
     this.cabecaFaces = (ArrayList<ArrayList<Integer>>)r[1];
+    conjuntoDeComponentesPontos.add(new ArrayList(cabecaPontos));
+    //conjuntoDeComponentesFaces.add(new ArrayList(cabecaFaces));
+    ArrayList<ArrayList<Integer>>novo = new ArrayList();
+    for (ArrayList<Integer>arr : this.cabecaFaces) {
+      novo.add(new ArrayList());
+      for (Integer i : arr) {
+        novo.get(novo.size()-1).add(i);
+      }
+    }
+    conjuntoDeComponentesFaces.add(novo);
     for (int i =0; i < cabecaPontos.size(); i++)corCabeca.add("255 255 0");
     //olho direito
     int offset = this.cabecaPontos.size();
@@ -342,10 +429,10 @@ class AbelhaPLY {
     u.translacao(this.olho2Pontos, -0.3f, 0.2f, 0.8f);
     u.translacao(this.narizPontos, -0f, -0.38f, 1.07f);
     gerarBoca();
-    
+
     //u.projecaoRadial(this.bocaPontos, 1, 0.005, -0.5f, -1);
-    
-    u.projecaoRadial2Palbebra(bocaPontos, 1,90 , new PVector(0, -200, 0));
+
+    u.projecaoRadial2Palbebra(bocaPontos, 1, 90, new PVector(0, -200, 0));
 
 
     offset = this.cabecaPontos.size();
@@ -399,6 +486,16 @@ class AbelhaPLY {
     narizPontos = (ArrayList<PVector>)r[0];
     for (int i =0; i < narizPontos.size(); i++)corNariz.add("92 64 51");
     narizFaces = (ArrayList<ArrayList<Integer>>)r[1];
+    conjuntoDeComponentesPontos.add(new ArrayList(this.narizPontos));
+    //conjuntoDeComponentesFaces.add(new ArrayList(this.narizFaces));
+    ArrayList<ArrayList<Integer>>novo = new ArrayList();
+    for (ArrayList<Integer>arr : this.narizFaces) {
+      novo.add(new ArrayList());
+      for (Integer i : arr) {
+        novo.get(novo.size()-1).add(i);
+      }
+    }
+    conjuntoDeComponentesFaces.add(novo);
     u.scale(this.narizPontos, new PVector(0.4f, 0.4f, 0.4f));
   }
   void gerarFerrao(float raio, float z) {
@@ -406,51 +503,70 @@ class AbelhaPLY {
     ferraoPontos = (ArrayList<PVector>)r[0];
     for (int i =0; i < ferraoPontos.size(); i++)corFerrao.add("255 255 255");
     ferraoFaces = (ArrayList<ArrayList<Integer>>)r[1];
+    conjuntoDeComponentesPontos.add(new ArrayList(this.ferraoPontos));
+    //conjuntoDeComponentesFaces.add(new ArrayList(this.ferraoFaces));
+    ArrayList<ArrayList<Integer>>novo = new ArrayList();
+    for (ArrayList<Integer>arr : this.ferraoFaces) {
+      novo.add(new ArrayList());
+      for (Integer i : arr) {
+        novo.get(novo.size()-1).add(i);
+      }
+    }
+    conjuntoDeComponentesFaces.add(novo);
   }
   void gerarBoca() {
     // 1. Curva do Lábio Inferior (Curva mais funda)
     PVector[] labioInferior = {
-     new PVector(-100, 0), // P0: Canto esquerdo
-     new PVector(-50, 120), // P1: Controle 1 (puxa para baixo)
-     new PVector(50, 120), // P2: Controle 2 (puxa para baixo)
-     new PVector(100, 0)     // P3: Canto direito
-     };
-     
-     // 2. Curva do Lábio Superior (Curva mais rasa de retorno)
-     PVector[] labioSuperior = {
-     new PVector(100, 0), // P3: Canto direito (ponto de partida do retorno)
-     new PVector(30, 20), // P4: Controle 1 do retorno
-     new PVector(-30, 20), // P5: Controle 2 do retorno
-     new PVector(-100, 0)    // P0: Canto esquerdo (fecha no ponto inicial)
-     };
+      new PVector(-100, 0), // P0: Canto esquerdo
+      new PVector(-50, 120), // P1: Controle 1 (puxa para baixo)
+      new PVector(50, 120), // P2: Controle 2 (puxa para baixo)
+      new PVector(100, 0)     // P3: Canto direito
+    };
+
+    // 2. Curva do Lábio Superior (Curva mais rasa de retorno)
+    PVector[] labioSuperior = {
+      new PVector(100, 0), // P3: Canto direito (ponto de partida do retorno)
+      new PVector(30, 20), // P4: Controle 1 do retorno
+      new PVector(-30, 20), // P5: Controle 2 do retorno
+      new PVector(-100, 0)    // P0: Canto esquerdo (fecha no ponto inicial)
+    };
     /*PVector[] labioInferior = {
-      new PVector(-65, -5), // canto esquerdo (um pouco acima)
-      new PVector(-35, -20), // lábio superior
-      new PVector(  0, -25),
-      new PVector( 35, -20),
-      new PVector( 65, -5), // canto direito
-      new PVector( 40, 40), // lábio inferior (volta)
-      new PVector(  0, 65),
-      new PVector(-40, 40)
-    };*/
+     new PVector(-65, -5), // canto esquerdo (um pouco acima)
+     new PVector(-35, -20), // lábio superior
+     new PVector(  0, -25),
+     new PVector( 35, -20),
+     new PVector( 65, -5), // canto direito
+     new PVector( 40, 40), // lábio inferior (volta)
+     new PVector(  0, 65),
+     new PVector(-40, 40)
+     };*/
     //this.bocaPontos = u.CatmullRomSpline(labioInferior);
-    
-     this.bocaPontos = u.curvaDeBezier(labioSuperior, 100);
+
+    this.bocaPontos = u.curvaDeBezier(labioSuperior, 100);
     this.bocaPontos.addAll(u.curvaDeBezier(labioInferior, 100));
-    
+
     for (int i = 0; i < bocaPontos.size(); i++)corBoca.add("0 0 0");
     for (int i = 0; i < (this.bocaPontos.size()/2) - 1; i++) {
-      
+
       ArrayList<Integer> face = new ArrayList();
       face.add(i);
       face.add(i+1);
       face.add(101+i+1);
       face.add(101+i);
-      
-     // this.bocaFaces.add(face);
+
+      // this.bocaFaces.add(face);
     }
-    
-   u.reflexao(this.bocaPontos, new PVector(1, -1, 1), u.calcularCentro(bocaPontos));
+    conjuntoDeComponentesPontos.add(new ArrayList(this.bocaPontos));
+    //conjuntoDeComponentesFaces.add(new ArrayList(this.bocaFaces));
+    ArrayList<ArrayList<Integer>>novo = new ArrayList();
+    for (ArrayList<Integer>arr : this.bocaFaces) {
+      novo.add(new ArrayList());
+      for (Integer i : arr) {
+        novo.get(novo.size()-1).add(i);
+      }
+    }
+    conjuntoDeComponentesFaces.add(novo);
+    u.reflexao(this.bocaPontos, new PVector(1, -1, 1), u.calcularCentro(bocaPontos));
     //u.rotacao(this.bocaPontos,'x',radians(180),new PVector());
   }
 
@@ -462,11 +578,32 @@ class AbelhaPLY {
     this.setCores(this.palpebra1Pontos.size(), corPalpebra1, "255 255 255");
     this.palpebra1Faces = (ArrayList<ArrayList<Integer>>)r[1];
 
+    conjuntoDeComponentesPontos.add(new ArrayList(this.palpebra1Pontos));
+    //conjuntoDeComponentesFaces.add(new ArrayList(this.palpebra1Faces));
+    ArrayList<ArrayList<Integer>>novo = new ArrayList();
+    for (ArrayList<Integer>arr : this.palpebra1Faces) {
+      novo.add(new ArrayList());
+      for (Integer i : arr) {
+        novo.get(novo.size()-1).add(i);
+      }
+    }
+    conjuntoDeComponentesFaces.add(novo);
+
     r = u.gerarElipsoide(1f, 1f, 40, true);
 
     this.palpebra2Pontos = (ArrayList<PVector>)r[0];
     this.setCores(this.palpebra2Pontos.size(), corPalpebra2, "255 255 255");
     this.palpebra2Faces = (ArrayList<ArrayList<Integer>>)r[1];
+    conjuntoDeComponentesPontos.add(new ArrayList(this.palpebra2Pontos));
+    //conjuntoDeComponentesFaces.add(new ArrayList(this.palpebra2Faces));
+    novo = new ArrayList();
+    for (ArrayList<Integer>arr : this.palpebra2Faces) {
+      novo.add(new ArrayList());
+      for (Integer i : arr) {
+        novo.get(novo.size()-1).add(i);
+      }
+    }
+    conjuntoDeComponentesFaces.add(novo);
   }
 
   void gerarAntenas(float raio, float z) {
@@ -507,6 +644,16 @@ class AbelhaPLY {
     }
     this.antena1Faces.addAll(antena1FacesB);
     u.translacao(antena1PontosB, 0, 0, -1*(z+z*1.5f));
+    conjuntoDeComponentesPontos.add(new ArrayList(antena1Pontos));
+    //conjuntoDeComponentesFaces.add(new ArrayList(antena1Faces));
+    ArrayList<ArrayList<Integer>>novo = new ArrayList();
+    for (ArrayList<Integer>arr : this.antena1Faces) {
+      novo.add(new ArrayList());
+      for (Integer i : arr) {
+        novo.get(novo.size()-1).add(i);
+      }
+    }
+    conjuntoDeComponentesFaces.add(novo);
     //Antena 2
 
 
@@ -547,6 +694,16 @@ class AbelhaPLY {
     }
     this.antena2Faces.addAll(antena1FacesB);
     u.translacao(antena1PontosB, 0, 0, -1*(z+z*1.5f));
+    conjuntoDeComponentesPontos.add(new ArrayList(this.antena2Pontos));
+    //conjuntoDeComponentesFaces.add(new ArrayList(this.antena2Faces));
+    novo = new ArrayList();
+    for (ArrayList<Integer>arr : this.antena2Faces) {
+      novo.add(new ArrayList());
+      for (Integer i : arr) {
+        novo.get(novo.size()-1).add(i);
+      }
+    }
+    conjuntoDeComponentesFaces.add(novo);
   }
 
   void gerarPernas() {
@@ -568,11 +725,33 @@ class AbelhaPLY {
     u.scale(perna1Pontos, new PVector(1, 1.2, 1));
     perna1Faces = u.gerarFacesF(12, 606);
 
+    conjuntoDeComponentesPontos.add(new ArrayList(this.perna1Pontos));
+    //conjuntoDeComponentesFaces.add(new ArrayList(this.perna1Faces));
+    ArrayList<ArrayList<Integer>>novo = new ArrayList();
+    for (ArrayList<Integer>arr : this.perna1Faces) {
+      novo.add(new ArrayList());
+      for (Integer i : arr) {
+        novo.get(novo.size()-1).add(i);
+      }
+    }
+    conjuntoDeComponentesFaces.add(novo);
+
     pontos = u.CatmullRomSpline(pts);
     perna2Pontos = u.gerarSolido(pontos, 30);
     for (int i =0; i < perna2Pontos.size(); i++)corPerna2.add("101 67 33");
     u.scale(perna2Pontos, new PVector(1, 1.2, 1));
     perna2Faces = u.gerarFacesF(12, 606);
+
+    conjuntoDeComponentesPontos.add(new ArrayList(this.perna2Pontos));
+    //conjuntoDeComponentesFaces.add(new ArrayList(this.perna2Faces));
+    novo = new ArrayList();
+    for (ArrayList<Integer>arr : this.perna2Faces) {
+      novo.add(new ArrayList());
+      for (Integer i : arr) {
+        novo.get(novo.size()-1).add(i);
+      }
+    }
+    conjuntoDeComponentesFaces.add(novo);
 
     pontos = u.CatmullRomSpline(pts);
     perna3Pontos = u.gerarSolido(pontos, 30);
@@ -580,11 +759,33 @@ class AbelhaPLY {
     u.scale(perna3Pontos, new PVector(1, 1.2, 1));
     perna3Faces = u.gerarFacesF(12, 606);
 
+    conjuntoDeComponentesPontos.add(new ArrayList(this.perna3Pontos));
+    //conjuntoDeComponentesFaces.add(new ArrayList(this.perna3Faces));
+    novo = new ArrayList();
+    for (ArrayList<Integer>arr : this.perna3Faces) {
+      novo.add(new ArrayList());
+      for (Integer i : arr) {
+        novo.get(novo.size()-1).add(i);
+      }
+    }
+    conjuntoDeComponentesFaces.add(novo);
+
     pontos = u.CatmullRomSpline(pts);
     perna4Pontos = u.gerarSolido(pontos, 30);
     for (int i =0; i < perna4Pontos.size(); i++)corPerna4.add("101 67 33");
     u.scale(perna4Pontos, new PVector(1, 1.2, 1));
     perna4Faces = u.gerarFacesF(12, 606);
+
+    conjuntoDeComponentesPontos.add(new ArrayList(this.perna4Pontos));
+    //conjuntoDeComponentesFaces.add(new ArrayList(this.perna4Faces));
+    novo = new ArrayList();
+    for (ArrayList<Integer>arr : this.perna4Faces) {
+      novo.add(new ArrayList());
+      for (Integer i : arr) {
+        novo.get(novo.size()-1).add(i);
+      }
+    }
+    conjuntoDeComponentesFaces.add(novo);
   }
   void setCores(int qPontos, ArrayList<String>corComponente, String corRGB) {
     for (int i = 0; i < qPontos; i++)corComponente.add(corRGB);
