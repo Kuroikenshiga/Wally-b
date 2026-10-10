@@ -318,7 +318,7 @@ nomesComponentes.add("Asa2");
     this.olho1Pontos.addAll(iris1P);
     u.translacao(iris1P, 0, 0, 0.25);
     ArrayList<ArrayList<Integer>> iris1F = (ArrayList<ArrayList<Integer>>)r[1];
-    nomesComponentes.add("Iris");
+    nomesComponentes.add("Iris1");
     conjuntoDeComponentesPontos.add(new ArrayList(iris1P));
     //conjuntoDeComponentesFaces.add(new ArrayList(iris1F));
     novo = new ArrayList();
