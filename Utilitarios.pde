@@ -9,7 +9,13 @@ class Utilitarios { //<>//
     centro.div(pts.size());
     return centro;
   }
-
+  int stringRgbToInteger(String s) {
+    String[] v = s.split("[ ]");
+    int r = Integer.parseInt(v[0]);
+    int g = Integer.parseInt(v[1]);
+    int b = Integer.parseInt(v[2]);
+    return (255 << 24) | (r << 16) | (g << 8) | b;
+  }
   void translacao(ArrayList<PVector> pts, float dx, float dy, float dz) {
     for (PVector p : pts) {
       p.x += dx;
@@ -393,7 +399,7 @@ class Utilitarios { //<>//
     return new ArrayList[]{pontos, faces};
   }
 
-  void projecaoRadial2Palbebra(ArrayList<PVector>pontos, float R, float factorAbertura,PVector deslocamento) {
+  void projecaoRadial2Palbebra(ArrayList<PVector>pontos, float R, float factorAbertura, PVector deslocamento) {
 
     for (PVector p : pontos) {
       p.add(deslocamento);
@@ -484,7 +490,7 @@ class Utilitarios { //<>//
     int inic = 0, fim = 3;
     for (; fim < ptsC.length; fim++) {
       println("inic = "+inic+" fim = "+ fim);
-      pontos.addAll(CatmullRomSplineSEG(ptsC, 100, inic));
+      pontos.addAll(CatmullRomSplineSEG(ptsC, 50, inic));
       inic++;
     }
 
@@ -533,33 +539,33 @@ class Utilitarios { //<>//
     }
     return faces;
   }
- ArrayList<ArrayList<Integer>> gerarFacesSorriso(ArrayList<PVector> pontos) {
-  ArrayList<ArrayList<Integer>> faces = new ArrayList<ArrayList<Integer>>();
-  int totalPontos = pontos.size();
+  ArrayList<ArrayList<Integer>> gerarFacesSorriso(ArrayList<PVector> pontos) {
+    ArrayList<ArrayList<Integer>> faces = new ArrayList<ArrayList<Integer>>();
+    int totalPontos = pontos.size();
 
-  // Para N pontos na curva, criamos (N - 1) segmentos de fita.
-  // Cada segmento gera 2 triângulos (faces).
-  for (int i = 0; i < totalPontos - 1; i++) {
-    int iTopo = i;
-    int iBase = i + totalPontos;
-    int proxTopo = i + 1;
-    int proxBase = i + 1 + totalPontos;
+    // Para N pontos na curva, criamos (N - 1) segmentos de fita.
+    // Cada segmento gera 2 triângulos (faces).
+    for (int i = 0; i < totalPontos - 1; i++) {
+      int iTopo = i;
+      int iBase = i + totalPontos;
+      int proxTopo = i + 1;
+      int proxBase = i + 1 + totalPontos;
 
-    // --- Face 1: Triângulo Esquerdo/Superior ---
-    ArrayList<Integer> face1 = new ArrayList<Integer>();
-    face1.add(iTopo);
-    face1.add(iBase);
-    face1.add(proxTopo);
-    faces.add(face1);
+      // --- Face 1: Triângulo Esquerdo/Superior ---
+      ArrayList<Integer> face1 = new ArrayList<Integer>();
+      face1.add(iTopo);
+      face1.add(iBase);
+      face1.add(proxTopo);
+      faces.add(face1);
 
-    // --- Face 2: Triângulo Direito/Inferior ---
-    ArrayList<Integer> face2 = new ArrayList<Integer>();
-    face2.add(proxTopo);
-    face2.add(iBase);
-    face2.add(proxBase);
-    faces.add(face2);
+      // --- Face 2: Triângulo Direito/Inferior ---
+      ArrayList<Integer> face2 = new ArrayList<Integer>();
+      face2.add(proxTopo);
+      face2.add(iBase);
+      face2.add(proxBase);
+      faces.add(face2);
+    }
+
+    return faces;
   }
-
-  return faces;
-}
 }
