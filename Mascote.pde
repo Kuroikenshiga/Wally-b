@@ -15,22 +15,43 @@
   //println(ab.stringsRGB);
   //exit();
 }
-final int limit = 10;
-int inc = 1;
-boolean dir = true,dirTranslate = true;
+final float limit = 1f;
+float inc = 0.9f,incRot = 0;
+//Tolerância para a comparação de pontos flutuantes
+float epsilon = 0.001;
+boolean dir = true,dirScale = true,pauseScale = false,dirRot = true,firstTime = true;
+float pausedRotate = 90;
+
 void draw(){
   background(46,46,46);
   translate(width/2,height/2);
-  rotateX(map(mouseY,0,height,PI,-PI));
-  rotateY(map(mouseX,0,width,-PI,PI));
-  if(inc == limit || inc == 0){
-    
-    dirTranslate = !dirTranslate;
-  }
-  inc = inc + (dirTranslate?1:-1);
+  //rotateX(map(mouseY,0,height,PI,-PI));
+  //rotateY(map(mouseX,0,width,-PI,PI));
+  
+  
   pushMatrix();//Inicio corpo
+    rotateY(radians(pausedRotate));
+    if(Math.abs(inc - limit) < epsilon || Math.abs(inc - 0.3f) < epsilon){
+      
+      dirScale = !pauseScale?!dirScale:dirScale;
+      
+      pauseScale = true;
+      if(incRot <= 180f){
+        
+        rotateY(radians(incRot));
+        incRot += 5;
+      }
+      else{
+        incRot = 0;
+        if(dirRot)pausedRotate = 270f;
+        else pausedRotate = 90f;
+        pauseScale = false;
+        dirRot = !dirRot;
+      }
+    }
+    inc += (pauseScale?0:(dirScale?0.01f:-0.01f));
     int index = ab.nomesComponentes.indexOf("Corpo");
-    translate(0,inc);
+    scale(inc);
     desenharParte(ab.conjuntoDeComponentesPontos.get(index),ab.conjuntoDeComponentesFaces.get(index),ab.stringsRGB.get(index));
     
     pushMatrix();//Inicio ferrao
@@ -121,20 +142,29 @@ void draw(){
   popMatrix();//Fim corpo
   //exit();
 }
-void desenharParte(ArrayList<PVector> pontos,ArrayList<ArrayList<Integer>>faces,String rgb){
+void desenharParte(ArrayList<PVector> pontos, ArrayList<ArrayList<Integer>>faces, String rgb){
   
   for(ArrayList<Integer>f:faces){
     beginShape();
     noStroke();
+    
     if(rgb == null) rgb = "0 0 0";
-    //print("\n"+u.stringRgbToInteger(rgb));
-    fill(u.stringRgbToInteger(rgb));
-    for(Integer i:f){
+    
+    if (rgb.equals("listrado")) {
+      float posX = pontos.get(f.get(0)).x;
       
-      //else fill((j >= faces.size()?0:u.stringRgbToInteger(colors.get(j))));
-      //Lembrar de verificar o motivo de estar renderizando de cabeça para baixo!!
-      //Solução temporária
-      vertex(-pontos.get(i).x,-pontos.get(i).y,-pontos.get(i).z);
+      if (sin(posX * 0.05) > 0) {
+        fill(255, 255, 0); 
+      } else {
+        fill(30, 30, 30); 
+      }
+    } else {
+      fill(u.stringRgbToInteger(rgb));
+    }
+    // -------------------------------
+    
+    for(Integer i:f){
+      vertex(-pontos.get(i).x, -pontos.get(i).y, -pontos.get(i).z);
     }
     
     endShape();

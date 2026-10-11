@@ -1,4 +1,4 @@
-class Utilitarios { //<>//
+class Utilitarios {
 
 
   PVector calcularCentro(ArrayList<PVector> pts) {
@@ -567,5 +567,47 @@ class Utilitarios { //<>//
     }
 
     return faces;
+  }
+  
+  //Nova função para gerar a esfera
+  ArrayList[] gerarEsferaUV(float raio, int paralelos, int meridianos) {
+    ArrayList<PVector> pontos = new ArrayList();
+    ArrayList<ArrayList<Integer>> faces = new ArrayList();
+
+    // Vértices
+    for (int i = 0; i <= paralelos; i++) {
+      float theta = map(i, 0, paralelos, 0, PI);
+      for (int j = 0; j <= meridianos; j++) {
+        float phi = map(j, 0, meridianos, 0, TWO_PI);
+        
+        float x = raio * sin(theta) * cos(phi);
+        float y = raio * sin(theta) * sin(phi);
+        float z = raio * cos(theta);
+        
+        pontos.add(new PVector(x, y, z));
+      }
+    }
+
+    // Faces
+    for (int i = 0; i < paralelos; i++) {
+      for (int j = 0; j < meridianos; j++) {
+        int p1 = i * (meridianos + 1) + j;
+        int p2 = p1 + 1;
+        int p3 = (i + 1) * (meridianos + 1) + j;
+        int p4 = p3 + 1;
+
+        // Triângulo 1
+        ArrayList<Integer> f1 = new ArrayList();
+        f1.add(p1); f1.add(p2); f1.add(p3);
+        faces.add(f1);
+
+        // Triângulo 2
+        ArrayList<Integer> f2 = new ArrayList();
+        f2.add(p2); f2.add(p4); f2.add(p3);
+        faces.add(f2);
+      }
+    }
+    
+    return new ArrayList[]{pontos, faces};
   }
 }

@@ -117,10 +117,11 @@ nomesComponentes.add("Asa2");
   }
 
   void gerarCorpo() {
-    ArrayList r[] = u.gerarEsfera(3);
+    ArrayList r[] = u.gerarEsferaUV(1f, 40, 40);
     corpoPontos = (ArrayList<PVector>)r[0];
+    u.rotacao(corpoPontos, 'y', radians(90), new PVector(0, 0, 0));
     for (int i =0; i < corpoPontos.size(); i++)corCorpo.add("255 255 0");
-    stringsRGB.add("255 255 0");
+    stringsRGB.add("listrado");
     u.scale(corpoPontos, new PVector(150, 120, 120));
     corpoFaces = (ArrayList<ArrayList<Integer>>)r[1];
     nomesComponentes.add("Corpo");
@@ -534,53 +535,50 @@ nomesComponentes.add("Asa2");
     conjuntoDeComponentesFaces.add(novo);
   }
   void gerarBoca() {
-    // 1. Curva do Lábio Inferior (Curva mais funda)
+    // Curva do Lábio Inferior 
     PVector[] labioInferior = {
-      new PVector(-100, 0), // P0: Canto esquerdo
-      new PVector(-50, 120), // P1: Controle 1 (puxa para baixo)
-      new PVector(50, 120), // P2: Controle 2 (puxa para baixo)
-      new PVector(100, 0)     // P3: Canto direito
+      new PVector(-100, 0),  
+      new PVector(-50, 120), 
+      new PVector(50, 120), 
+      new PVector(100, 0)    
     };
 
-    // 2. Curva do Lábio Superior (Curva mais rasa de retorno)
+    // Curva do Lábio Superior 
     PVector[] labioSuperior = {
-      new PVector(100, 0), // P3: Canto direito (ponto de partida do retorno)
-      new PVector(30, 20), // P4: Controle 1 do retorno
-      new PVector(-30, 20), // P5: Controle 2 do retorno
-      new PVector(-100, 0)    // P0: Canto esquerdo (fecha no ponto inicial)
+      new PVector(-100, 0), 
+      new PVector(-30, 20), 
+      new PVector(30, 20),  
+      new PVector(100, 0)    
     };
-    /*PVector[] labioInferior = {
-     new PVector(-65, -5), // canto esquerdo (um pouco acima)
-     new PVector(-35, -20), // lábio superior
-     new PVector(  0, -25),
-     new PVector( 35, -20),
-     new PVector( 65, -5), // canto direito
-     new PVector( 40, 40), // lábio inferior (volta)
-     new PVector(  0, 65),
-     new PVector(-40, 40)
-     };*/
-    //this.bocaPontos = u.CatmullRomSpline(labioInferior);
 
     this.bocaPontos = u.curvaDeBezier(labioSuperior, 100);
     this.bocaPontos.addAll(u.curvaDeBezier(labioInferior, 100));
 
-    for (int i = 0; i < bocaPontos.size(); i++)corBoca.add("0 0 0");
+    for (int i = 0; i < bocaPontos.size(); i++) corBoca.add("0 0 0");
     stringsRGB.add("0 0 0");
-    for (int i = 0; i < (this.bocaPontos.size()/2) - 1; i++) {
+    
+    // Faces
+    for (int i = 0; i < 100; i++) {
+      // Triângulo 1 
+      ArrayList<Integer> t1 = new ArrayList();
+      t1.add(i);
+      t1.add(101 + i);
+      t1.add(i + 1);
+      this.bocaFaces.add(t1);
 
-      ArrayList<Integer> face = new ArrayList();
-      face.add(i);
-      face.add(i+1);
-      face.add(101+i+1);
-      face.add(101+i);
-
-      // this.bocaFaces.add(face);
+      // Triângulo 2 )
+      ArrayList<Integer> t2 = new ArrayList();
+      t2.add(i + 1);
+      t2.add(101 + i);
+      t2.add(101 + i + 1);
+      this.bocaFaces.add(t2);
     }
+    
     nomesComponentes.add("Boca");
     conjuntoDeComponentesPontos.add(new ArrayList(this.bocaPontos));
-    //conjuntoDeComponentesFaces.add(new ArrayList(this.bocaFaces));
-    ArrayList<ArrayList<Integer>>novo = new ArrayList();
-    for (ArrayList<Integer>arr : this.bocaFaces) {
+    
+    ArrayList<ArrayList<Integer>> novo = new ArrayList();
+    for (ArrayList<Integer> arr : this.bocaFaces) {
       novo.add(new ArrayList());
       for (Integer i : arr) {
         novo.get(novo.size()-1).add(i);
@@ -588,7 +586,6 @@ nomesComponentes.add("Asa2");
     }
     conjuntoDeComponentesFaces.add(novo);
     u.reflexao(this.bocaPontos, new PVector(1, -1, 1), u.calcularCentro(bocaPontos));
-    //u.rotacao(this.bocaPontos,'x',radians(180),new PVector());
   }
 
   void gerarPalpebra() {
