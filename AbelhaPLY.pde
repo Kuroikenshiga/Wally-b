@@ -753,7 +753,7 @@ nomesComponentes.add("Asa2");
     stringsRGB.add("101 67 33");
     u.scale(perna1Pontos, new PVector(1, 1.2, 1));
     perna1Faces = u.gerarFacesF(6, 306);
-    println(perna1Pontos.size());
+    //println(perna1Pontos.size());
     nomesComponentes.add("Perna1");
     conjuntoDeComponentesPontos.add(new ArrayList(this.perna1Pontos));
     //conjuntoDeComponentesFaces.add(new ArrayList(this.perna1Faces));
