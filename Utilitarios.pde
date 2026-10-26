@@ -489,7 +489,7 @@ class Utilitarios {
     ArrayList<PVector> pontos = new ArrayList();
     int inic = 0, fim = 3;
     for (; fim < ptsC.length; fim++) {
-      println("inic = "+inic+" fim = "+ fim);
+     // println("inic = "+inic+" fim = "+ fim);
       pontos.addAll(CatmullRomSplineSEG(ptsC, 50, inic));
       inic++;
     }
@@ -610,4 +610,16 @@ class Utilitarios {
     
     return new ArrayList[]{pontos, faces};
   }
+  //Lembrar de mudar essa forma preguiçosa de definir o plano em que a curva sera definida
+  ArrayList<PVector> LemniscataBernoulli(int res,float a,String plano,float scale){
+    ArrayList<PVector> curva = new ArrayList();
+    plano = plano.toLowerCase();
+    for(int i = 0; i < res;i++){
+      float t = map(i,0,res-1,0,TWO_PI);
+      float x = (a*sqrt(2)*cos(t))/(1 + sin(t)*sin(t));
+      float y = (a*sqrt(2)*sin(t)*cos(t))/(1+sin(t)*sin(t));
+      curva.add(plano.equals("xy")?new PVector(scale*x,scale*y,0):plano.equals("xz")?new PVector(scale*x,0,scale*y):new PVector(0,scale*x,scale*y));
+    }
+    return curva;
+}
 }
