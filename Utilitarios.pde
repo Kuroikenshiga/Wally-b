@@ -622,4 +622,20 @@ class Utilitarios {
     }
     return curva;
 }
+void drawTexRect(PImage img){
+    textureMode(NORMAL);
+    
+  beginShape();
+    if(img == null){
+      fill(0,255,0);    
+    }
+    else texture(img);
+    noStroke();
+    vertex(0, 0, 0, 0, 0);
+    vertex(img != null?img.width:445, 0, 0, 1, 0);
+    vertex(img != null?img.width:445, img != null?img.height:79, 0, 1, 1);
+    vertex(0, img != null?img.height:79, 0, 0, 1);
+  endShape();
+  
+}
 }

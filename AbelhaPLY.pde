@@ -262,6 +262,8 @@ nomesComponentes.add("Asa2");
     corCorpo.addAll(corPerna4);
     corpoFaces.addAll(perna4Faces);
   }
+  
+  
   void gerarOlhos() {
     ArrayList r[] = u.gerarEsfera(3);
     this.olho1Pontos = (ArrayList<PVector>)r[0];
@@ -314,6 +316,7 @@ nomesComponentes.add("Asa2");
       }
     }
     u.rotacao(palpebra1Pontos, 'x', radians(-130), new PVector());
+    //u.rotacao(palpebra1Pontos, 'x', radians(-130), new PVector());
     this.olho1Faces.addAll(this.palpebra1Faces);
     r = u.gerarEsfera(3);
 
@@ -448,7 +451,7 @@ nomesComponentes.add("Asa2");
 
     //u.projecaoRadial(this.bocaPontos, 1, 0.005, -0.5f, -1);
 
-    u.projecaoRadial2Palbebra(bocaPontos, 1, 90, new PVector(0, -200, 0));
+    u.projecaoRadial2Palbebra(bocaPontos, 1.02, 150, new PVector(-210, -200, 0));
 
 
     offset = this.cabecaPontos.size();
@@ -537,18 +540,18 @@ nomesComponentes.add("Asa2");
   void gerarBoca() {
     // Curva do Lábio Inferior 
     PVector[] labioInferior = {
-      new PVector(-100, 0),  
-      new PVector(-50, 120), 
-      new PVector(50, 120), 
-      new PVector(100, 0)    
+      new PVector(-220, 0),  
+      new PVector(-50, 190), 
+      new PVector(50, 190), 
+      new PVector(220, 0)    
     };
 
     // Curva do Lábio Superior 
     PVector[] labioSuperior = {
-      new PVector(-100, 0), 
+      new PVector(-220, 0), 
       new PVector(-30, 20), 
       new PVector(30, 20),  
-      new PVector(100, 0)    
+      new PVector(220, 0)    
     };
 
     this.bocaPontos = u.curvaDeBezier(labioSuperior, 100);
