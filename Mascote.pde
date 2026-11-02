@@ -105,7 +105,7 @@ void draw() {
   }
  //stopped();
 //println(frameCount);
-saveFrame("output/frame-####.png");
+//saveFrame("output/frame-####.png");
 }
 
 void movimentoCamInteracao(){
