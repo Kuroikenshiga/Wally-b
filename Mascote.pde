@@ -58,9 +58,9 @@ void setup() {
   ASA1      = ab.nomesComponentes.indexOf("Asa1");
   ASA2      = ab.nomesComponentes.indexOf("Asa2");
 }
-float inc = 0.5f, incRot = 0, limit = 30,scaleControl = 0,rot = 0,rot2 = 0;
+float inc = 0.5f, incRot = 0, limit = 30,scaleControl = 0,rot = 0,rot2 = 0,rot3 = 0;
 PVector currentPos = new PVector();
-boolean canChangeIndice = true,palpebraDir = true;
+boolean canChangeIndice = true,palpebraDir = true,asnfafhjsfhfajshfus = true;
 //Tolerância para a comparação de pontos flutuantes
 //indice 31
 boolean dir = true,dirPalpebra = false;
@@ -105,119 +105,14 @@ void draw() {
   }
  //stopped();
 //println(frameCount);
+saveFrame("output/frame-####.png");
 }
-void stopped(){
-pushMatrix();//Inicio corpo
-    directionalLight(255, 248, 220, -0.3, 0.9, -0.4); 
-  ambientLight(75, 105, 145);
-  directionalLight(90, 100, 80, 0.0, -1.0, 0.0);
-  directionalLight(240, 240, 255, 0.6, -0.2, 0.8);
-   //translate(curva.get(indice).x*10,curva.get(indice).y*10,curva.get(indice).z*10);
-    //float dx = curva.get(indice+1 == curva.size()?0:indice+1).x - curva.get(indice).x;
-    //float dz = curva.get(indice+1 == curva.size()?0:indice+1).z - curva.get(indice).z;
-    
-    //inclinacao = atan2(dx,dz);
-    //rotateY(radians(90));
-    scale(inc,inc,inc);
-    
-    desenharParte(ab.conjuntoDeComponentesPontos.get(CORPO), ab.conjuntoDeComponentesFaces.get(CORPO), ab.stringsRGB.get(CORPO));
-    
-    pushMatrix();//Inicio ferrao
-    //index = ab.nomesComponentes.indexOf("Ferrao");
-    desenharParte(ab.conjuntoDeComponentesPontos.get(FERRAO), ab.conjuntoDeComponentesFaces.get(FERRAO), ab.stringsRGB.get(FERRAO));
-    popMatrix();//Fim ferrao
-  
-    pushMatrix();//Inicio cabeca
-    //index = ab.nomesComponentes.indexOf("Cabeca");
-    desenharParte(ab.conjuntoDeComponentesPontos.get(CABECA), ab.conjuntoDeComponentesFaces.get(CABECA), ab.stringsRGB.get(CABECA));
-  
-    pushMatrix();
-    //index = ab.nomesComponentes.indexOf("Palpebra1");
-    
-    desenharParte(ab.conjuntoDeComponentesPontos.get(PALPEBRA1), ab.conjuntoDeComponentesFaces.get(PALPEBRA1), ab.stringsRGB.get(PALPEBRA1));
-    popMatrix();
-    pushMatrix();
-    //index = ab.nomesComponentes.indexOf("Olho1");
-    desenharParte(ab.conjuntoDeComponentesPontos.get(OLHO1), ab.conjuntoDeComponentesFaces.get(OLHO1), ab.stringsRGB.get(OLHO1));
-    pushMatrix();
-    //index = ab.nomesComponentes.indexOf("Iris1");
-    desenharParte(ab.conjuntoDeComponentesPontos.get(IRIS1), ab.conjuntoDeComponentesFaces.get(IRIS1), null);
-    popMatrix();
-    popMatrix();
-    pushMatrix();
-    //index = ab.nomesComponentes.indexOf("Palpebra2");
-    desenharParte(ab.conjuntoDeComponentesPontos.get(PALPEBRA2), ab.conjuntoDeComponentesFaces.get(PALPEBRA2), ab.stringsRGB.get(PALPEBRA2));
-    popMatrix();
-    pushMatrix();
-    //index = ab.nomesComponentes.indexOf("Olho2");
-    desenharParte(ab.conjuntoDeComponentesPontos.get(OLHO2), ab.conjuntoDeComponentesFaces.get(OLHO2), ab.stringsRGB.get(OLHO2));
-    pushMatrix();
-    //index = ab.nomesComponentes.indexOf("Iris2");
-    desenharParte(ab.conjuntoDeComponentesPontos.get(IRIS2), ab.conjuntoDeComponentesFaces.get(IRIS2), null);
-    popMatrix();
-    popMatrix();
-    pushMatrix();
-    //index = ab.nomesComponentes.indexOf("Nariz");
-    desenharParte(ab.conjuntoDeComponentesPontos.get(NARIZ), ab.conjuntoDeComponentesFaces.get(NARIZ), ab.stringsRGB.get(NARIZ));
-    popMatrix();
-    pushMatrix();
-    //index = ab.nomesComponentes.indexOf("Boca");
-    desenharParte(ab.conjuntoDeComponentesPontos.get(BOCA), ab.conjuntoDeComponentesFaces.get(BOCA), null);
-    popMatrix();
-    pushMatrix();
-    //index = ab.nomesComponentes.indexOf("Antena1");
-    desenharParte(ab.conjuntoDeComponentesPontos.get(ANTENA1), ab.conjuntoDeComponentesFaces.get(ANTENA1), ab.stringsRGB.get(ANTENA1));
-    popMatrix();
-    pushMatrix();
-    //index = ab.nomesComponentes.indexOf("Antena2");
-    desenharParte(ab.conjuntoDeComponentesPontos.get(ANTENA2), ab.conjuntoDeComponentesFaces.get(ANTENA2), ab.stringsRGB.get(ANTENA2));
-    popMatrix();
-  
-    popMatrix();//Fim cabeca
-  
-  
-    //print(dX);
-    pushMatrix();
-    //index = ab.nomesComponentes.indexOf("Perna1");
-    //rotateX(radians(dFeets));
-    desenharParte(ab.conjuntoDeComponentesPontos.get(PERNA1), ab.conjuntoDeComponentesFaces.get(PERNA1), ab.stringsRGB.get(PERNA1));
-    
-    //println("\n"+ab.stringsRGB.get(index));
-    popMatrix();
-    pushMatrix();
-    //index = ab.nomesComponentes.indexOf("Perna2");
-    //rotateX(radians(dFeets));
-    desenharParte(ab.conjuntoDeComponentesPontos.get(PERNA2), ab.conjuntoDeComponentesFaces.get(PERNA2), ab.stringsRGB.get(PERNA2));
-    popMatrix();
-    pushMatrix();
-    //index = ab.nomesComponentes.indexOf("Perna3");
-   // rotateX(radians(dFeets));
-    desenharParte(ab.conjuntoDeComponentesPontos.get(PERNA3), ab.conjuntoDeComponentesFaces.get(PERNA3), ab.stringsRGB.get(PERNA3));
-    popMatrix();
-    pushMatrix();
-    //index = ab.nomesComponentes.indexOf("Perna4");
-    //rotateX(radians(dFeets));
-    desenharParte(ab.conjuntoDeComponentesPontos.get(PERNA4), ab.conjuntoDeComponentesFaces.get(PERNA4), ab.stringsRGB.get(PERNA4));
-    popMatrix();
-  
-  
-    dir = !dir;
-  
-    pushMatrix();
-    //index = ab.nomesComponentes.indexOf("Asa1");
-    u.rotacao(ab.conjuntoDeComponentesPontos.get(ASA1), 'x', radians(dir?30f:-30f), ab.conjuntoDeComponentesPontos.get(ASA1).get(0));
-    desenharParte(ab.conjuntoDeComponentesPontos.get(ASA1), ab.conjuntoDeComponentesFaces.get(ASA1), ab.stringsRGB.get(ASA1));
-  
-    popMatrix();
-  
-    pushMatrix();
-    //index = ab.nomesComponentes.indexOf("Asa2");
-    //u.rotacao(ab.conjuntoDeComponentesPontos.get(ASA2), 'x', radians(dir?-30f:30f), ab.conjuntoDeComponentesPontos.get(ASA2).get(0));
-    desenharParte(ab.conjuntoDeComponentesPontos.get(ASA2), ab.conjuntoDeComponentesFaces.get(ASA2), ab.stringsRGB.get(ASA2));
-    popMatrix();
-  popMatrix();//Fim corpo
-}
+
 void movimentoCamInteracao(){
+  if(rot3 >= 90 && asnfafhjsfhfajshfus){
+    scaleControl = 0;
+    asnfafhjsfhfajshfus = false;
+  }
    pushMatrix();//Inicio corpo
   directionalLight(255, 248, 220, -0.3, 0.9, -0.4); 
   ambientLight(75, 105, 145);
@@ -227,8 +122,17 @@ void movimentoCamInteracao(){
     translate(0,(sin(frameCount*0.5)*6),0);
     translate(-toLeft,toUp,0);
     scale(inc - scaleControl);
-    rotateY(radians(90)+radians(rot) - radians(rot2));
+    rotateY(radians(90)+radians(rot) - radians(rot2) - radians(rot3));
      if(rot <= 135 && scaleControl > 0)scaleControl-=0.04f;
+     if(scaleControl <= 0 && rot3 <= 45)rot3+=3;
+     if(rot3 >= 45 && toLeft <= 700){
+       toLeft+=60;
+       
+     }
+     if(toLeft >= 700 && rot3 <= 90)rot3+=3;
+     if(rot3 >= 90 && scaleControl < 5f && inc != 0)scaleControl += 0.05f;
+     if(abs(inc - scaleControl) < 0.01){inc = 0;scaleControl = 0;}
+     
     desenharParte(ab.conjuntoDeComponentesPontos.get(CORPO), ab.conjuntoDeComponentesFaces.get(CORPO), ab.stringsRGB.get(CORPO));
     
     pushMatrix();//Inicio ferrao
